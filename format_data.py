@@ -12,6 +12,7 @@ def get_following_df(accounts_df):
     all_files = [f for f in listdir(FOLLOWING_DIR) if isfile(join(FOLLOWING_DIR, f))]
     edge_df = pd.DataFrame({},columns=['source', 'target'])
     nodes_df = pd.DataFrame({},columns=['id', 'name', 'username'])
+    all_files = all_files[:3]
     for f in all_files:
         # sanity check
         source_id = f[2:-5]
@@ -50,15 +51,15 @@ def get_accounts_df():
     return df
 
 def output_files(nodes_df, edges_df):
-    nodes_df.to_csv('./data/nodes.csv', index=False)
-    edges_df.to_csv('./data/edges.csv', index=False)
+    nodes_df.to_csv('./data/nodes_3.csv', index=False)
+    edges_df.to_csv('./data/edges_3.csv', index=False)
 
 def filter_out():
     with open('./data/removed_ids.json', encoding='utf-8') as f_obj:
         remove_ids = json.load(f_obj)['removed_ids']
     
-    nodes = pd.read_csv('./data/nodes.csv', encoding='utf-8')
-    edges = pd.read_csv('./data/edges.csv', encoding='utf-8')
+    nodes = pd.read_csv('./data/nodes_3.csv', encoding='utf-8')
+    edges = pd.read_csv('./data/edges_3.csv', encoding='utf-8')
     # filter out nodes
     print('\nremoving entries')
     for id in remove_ids:
@@ -96,17 +97,40 @@ def create_subset(nodes, edges, size):
     
     return nodes, edges
 
+def format_d3_json():
+    nodes_df = pd.read_csv('./data/nodes_3.csv', encoding='utf-8')
+    edges_df = pd.read_csv('./data/edges_3.csv', encoding='utf-8')
+
+    nodes = []
+    edges = []
+    for idx in range(nodes_df.shape[0]):
+        acc = nodes_df.iloc[idx]
+        nodes.append({
+            "id": int(acc.id),
+            "name": acc.username
+        })
+    for idx in range(edges_df.shape[0]):
+        row = edges_df.iloc[idx]
+        edges.append({
+            "source": int(row.source),
+            "target":int(row.target)
+        })
+
+    f = open('./data/network_data_3.json', 'w')
+    json.dump({"nodes":nodes,"links":edges}, f, sort_keys=True)
+
 
 if __name__ == "__main__":
-    # accounts_df = get_accounts_df()
-    # nodes, edges = get_following_df(accounts_df)
-    # output_files(nodes, edges)
+    accounts_df = get_accounts_df()
+    nodes, edges = get_following_df(accounts_df)
+    output_files(nodes, edges)
     nodes, edges = filter_out()
     output_files(nodes, edges)
-    n_df, e_df = create_subset(nodes, edges, 500)
-    n_df.to_csv('./data/nodes_500.csv', index=False)
-    e_df.to_csv('./data/edges_500.csv', index=False)
+    # n_df, e_df = create_subset(nodes, edges, 200)
+    # n_df.to_csv('./data/nodes_200.csv', index=False)
+    # e_df.to_csv('./data/edges_200.csv', index=False)
 
-    n_df, e_df = create_subset(nodes, edges, 1000)
-    n_df.to_csv('./data/nodes_1000.csv', index=False)
-    e_df.to_csv('./data/edges_1000.csv', index=False)
+    # n_df, e_df = create_subset(nodes, edges, 1000)
+    # n_df.to_csv('./data/nodes_1000.csv', index=False)
+    # e_df.to_csv('./data/edges_1000.csv', index=False)
+    format_d3_json()
