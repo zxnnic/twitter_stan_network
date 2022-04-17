@@ -1,6 +1,7 @@
 import json
 import csv
 import pandas as pd
+import random
 
 from os import listdir
 from os.path import isfile, join
@@ -49,8 +50,8 @@ def get_accounts_df():
     return df
 
 def output_files(nodes_df, edges_df):
-    nodes_df.to_csv('./data/nodes.csv')
-    edges_df.to_csv('./data/edges.csv')
+    nodes_df.to_csv('./data/nodes.csv', index=False)
+    edges_df.to_csv('./data/edges.csv', index=False)
 
 def filter_out():
     with open('./data/removed_ids.json', encoding='utf-8') as f_obj:
@@ -66,11 +67,46 @@ def filter_out():
         edges.drop(edges.index[edges['source'] == id], inplace=True)
         edges.drop(edges.index[edges['target'] == id], inplace=True)
 
+    # filter based on what is in the nodes
+    node_list = nodes['id'].tolist()
+    target_list = edges['target'].tolist()
+    source_list = edges['source'].tolist()
+    for id in target_list:
+        if id not in node_list:
+            edges.drop(edges.index[edges['target'] == id], inplace=True)
+            edges.drop(edges.index[edges['source'] == id], inplace=True)
+    
+    for id in source_list:
+        if id not in node_list:
+            edges.drop(edges.index[edges['target'] == id], inplace=True)
+            edges.drop(edges.index[edges['source'] == id], inplace=True)
+
     return nodes, edges
 
+def create_subset(nodes, edges, size):
+    source_list = edges['source'].tolist()
+    random.shuffle(source_list)
+    source_list = source_list[:size]
+    node_list = nodes['id'].tolist()
+    print('removing all unnecessary sources')
+    for id in node_list:
+        if id not in source_list:
+            edges.drop(edges.index[edges['source'] == id], inplace=True)
+            nodes.drop(nodes.index[nodes['id'] == id], inplace=True)
+    
+    return nodes, edges
+
+
 if __name__ == "__main__":
-    accounts_df = get_accounts_df()
-    nodes, edges = get_following_df(accounts_df)
-    output_files(nodes, edges)
+    # accounts_df = get_accounts_df()
+    # nodes, edges = get_following_df(accounts_df)
+    # output_files(nodes, edges)
     nodes, edges = filter_out()
     output_files(nodes, edges)
+    n_df, e_df = create_subset(nodes, edges, 500)
+    n_df.to_csv('./data/nodes_500.csv', index=False)
+    e_df.to_csv('./data/edges_500.csv', index=False)
+
+    n_df, e_df = create_subset(nodes, edges, 1000)
+    n_df.to_csv('./data/nodes_1000.csv', index=False)
+    e_df.to_csv('./data/edges_1000.csv', index=False)
