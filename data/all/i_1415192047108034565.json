@@ -1,0 +1,32 @@
+{
+    "data": [
+      {
+        "id": "4811011050",
+        "name": "NCT",
+        "username": "NCTsmtown"
+      },
+      {
+        "id": "892285827195084800",
+        "name": "NCT_OFFICIAL_JP",
+        "username": "NCT_OFFICIAL_JP"
+      },
+      {
+        "id": "1033994695595065347",
+        "name": "WayV",
+        "username": "WayV_official"
+      },
+      {
+        "id": "870188817537355776",
+        "name": "NCT DREAM",
+        "username": "NCTsmtown_DREAM"
+      },
+      {
+        "id": "884378714",
+        "name": "SMTOWN",
+        "username": "SMTOWNGLOBAL"
+      }
+    ],
+    "meta": {
+      "result_count": 5
+    }
+  }

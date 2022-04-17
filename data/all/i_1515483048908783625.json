@@ -1,0 +1,42 @@
+{
+    "data": [
+      {
+        "id": "873092428755894272",
+        "name": "Red Velvet",
+        "username": "RVsmtown"
+      },
+      {
+        "id": "3065576725",
+        "name": "SM_NCT",
+        "username": "SM_NCT"
+      },
+      {
+        "id": "892285827195084800",
+        "name": "NCT_OFFICIAL_JP",
+        "username": "NCT_OFFICIAL_JP"
+      },
+      {
+        "id": "884378714",
+        "name": "SMTOWN",
+        "username": "SMTOWNGLOBAL"
+      },
+      {
+        "id": "870188817537355776",
+        "name": "NCT DREAM",
+        "username": "NCTsmtown_DREAM"
+      },
+      {
+        "id": "869875390465982465",
+        "name": "NCT 127",
+        "username": "NCTsmtown_127"
+      },
+      {
+        "id": "4811011050",
+        "name": "NCT",
+        "username": "NCTsmtown"
+      }
+    ],
+    "meta": {
+      "result_count": 7
+    }
+  }

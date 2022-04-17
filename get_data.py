@@ -8,7 +8,7 @@ def create_url(id):
     # Replace with user ID below
     # user_id = 884378714 # SMTOWNGLOBAL
     max_results = 'max_results=1000'
-    return "https://api.twitter.com/2/users/{}/followers?{}".format(id, max_results)
+    return "https://api.twitter.com/2/users/{}/following?{}".format(id, max_results)
 
 def bearer_oauth(r):
     """
@@ -73,8 +73,8 @@ def get_stan_data(f):
         else:
             print(id)
             create_json('all/i_'+id,json_response)
-        # check if acc is following more than 50 accounts
-        if 'errors' not in json_response.keys() and json_response['meta']["result_count"] > 50:
+        # check if acc is following more than 10 accounts
+        if 'errors' not in json_response.keys() and json_response['meta']["result_count"] > 10:
             # first store obtained data into all
             # convert json_response to dataframe
             df = pd.DataFrame.from_dict(json_response['data'])

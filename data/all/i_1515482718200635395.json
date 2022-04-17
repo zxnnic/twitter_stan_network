@@ -1,0 +1,52 @@
+{
+    "data": [
+      {
+        "id": "1033152632527892480",
+        "name": "Jackson Wang",
+        "username": "JacksonWang852"
+      },
+      {
+        "id": "1062578718214770688",
+        "name": "ITZY",
+        "username": "ITZYofficial"
+      },
+      {
+        "id": "873092428755894272",
+        "name": "Red Velvet",
+        "username": "RVsmtown"
+      },
+      {
+        "id": "3129056526",
+        "name": "TWICE",
+        "username": "JYPETWICE"
+      },
+      {
+        "id": "967000437797761024",
+        "name": "(G)I-DLE·(여자)아이들",
+        "username": "G_I_DLE"
+      },
+      {
+        "id": "1409798257",
+        "name": "BTS_official",
+        "username": "bts_bighit"
+      },
+      {
+        "id": "408177579",
+        "name": "YG FAMILY",
+        "username": "ygent_official"
+      },
+      {
+        "id": "884378714",
+        "name": "SMTOWN",
+        "username": "SMTOWNGLOBAL"
+      },
+      {
+        "id": "1277453652924366848",
+        "name": "aespa",
+        "username": "aespa_official"
+      }
+    ],
+    "meta": {
+      "result_count": 9
+    }
+  }
