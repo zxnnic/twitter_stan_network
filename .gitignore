@@ -2,3 +2,4 @@ secret*.py
 test.py
 *.gz
 *.gephi
+*.gephi*

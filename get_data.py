@@ -1,6 +1,6 @@
 import requests
 import json
-from secret import *
+from secret_chris import *
 import pandas as pd
 
 
