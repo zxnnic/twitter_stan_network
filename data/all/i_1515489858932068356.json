@@ -1,0 +1,37 @@
+{
+    "data": [
+      {
+        "id": "2983890506",
+        "name": "Shopee Indonesia",
+        "username": "ShopeeID"
+      },
+      {
+        "id": "884378714",
+        "name": "SMTOWN",
+        "username": "SMTOWNGLOBAL"
+      },
+      {
+        "id": "1409798257",
+        "name": "BTS_official",
+        "username": "bts_bighit"
+      },
+      {
+        "id": "366987179",
+        "name": "Joko Widodo",
+        "username": "jokowi"
+      },
+      {
+        "id": "873115441303924736",
+        "name": "EXO",
+        "username": "weareoneEXO"
+      },
+      {
+        "id": "168683422",
+        "name": "BIGHIT MUSIC",
+        "username": "BIGHIT_MUSIC"
+      }
+    ],
+    "meta": {
+      "result_count": 6
+    }
+  }
