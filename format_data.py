@@ -1,4 +1,5 @@
 import json
+import csv
 import pandas as pd
 
 from os import listdir
@@ -8,31 +9,37 @@ FOLLOWING_DIR = './data/following/'
 
 def get_following_df(accounts_df):
     all_files = [f for f in listdir(FOLLOWING_DIR) if isfile(join(FOLLOWING_DIR, f))]
-    edge_df = pd.DataFrame({},columns=['source', 'target', 'source_un', 'target_un'])
+    edge_df = pd.DataFrame({},columns=['source', 'target'])
     nodes_df = pd.DataFrame({},columns=['id', 'name', 'username'])
     for f in all_files:
+        # sanity check
         source_id = f[2:-5]
+        print('Looking at:', source_id)
         # adding the current node into the nodes list
-        adfa= accounts_df.loc[accounts_df['id'] == source_id]
-        if nodes_df.loc[nodes_df['id'] == source_id]:
-            source_un = nodes_df.loc[nodes_df['id'] == source_id]
-        else:
-            nodes_df.loc[0] = accounts_df.loc[accounts_df['id'] == source_id]
+        source_un = accounts_df.loc[accounts_df['id'] == source_id, 'username'].iloc[0]
+        source_name = accounts_df.loc[accounts_df['id'] == source_id, 'name'].iloc[0]
+        if nodes_df.loc[nodes_df['id'] == source_id].empty:
+            df = pd.DataFrame.from_dict({'id': [source_id], 'name': [source_name], 'username': [source_un]})
+            nodes_df = pd.concat([nodes_df, df])
         
         # loading all the accounts they are following
         with open(join(FOLLOWING_DIR, f), encoding='utf-8') as f_obj:
             data = json.load(f_obj)['data']
         # adding all the accounts they are following into the node and edge list
         for acc in data:
-            del acc['created_at']
             if acc['id'] not in accounts_df['id'].values:
-                nodes_df.loc[0] = pd.DataFrame.from_dict(acc, columns=['id', 'name', 'username'])
-            edge_df.loc[0] = pd.DataFrame([
-                                            source_id,
-                                            acc['id'],
+                df = pd.DataFrame({'id': [acc['id']], 'name': [acc['name']], 'username': [acc['username']]})
+                nodes_df = pd.concat([nodes_df, df])
+            df = pd.DataFrame({
+                            'source':[source_id], 
+                            'target':[acc['id']]
+                            })
+            edge_df = pd.concat([edge_df, df])
+    
+    # get rid of any repeated entries
+    nodes_df.drop_duplicates(subset='id', keep=False, inplace=True)
 
-                                            ], 
-                                            columns=['source', 'target', 'source_un', 'target_un'])
+    return nodes_df, edge_df
 
 def get_accounts_df():
     with open('./data/SMTOWNGLOBAL_followers_og.json', encoding='utf-8') as f_obj:
@@ -41,7 +48,29 @@ def get_accounts_df():
 
     return df
 
+def output_files(nodes_df, edges_df):
+    nodes_df.to_csv('./data/nodes.csv')
+    edges_df.to_csv('./data/edges.csv')
+
+def filter_out():
+    with open('./data/removed_ids.json', encoding='utf-8') as f_obj:
+        remove_ids = json.load(f_obj)['removed_ids']
+    
+    nodes = pd.read_csv('./data/nodes.csv', encoding='utf-8')
+    edges = pd.read_csv('./data/edges.csv', encoding='utf-8')
+    # filter out nodes
+    print('\nremoving entries')
+    for id in remove_ids:
+        print(id)
+        nodes.drop(nodes.index[nodes['id'] == id], inplace=True)
+        edges.drop(edges.index[edges['source'] == id], inplace=True)
+        edges.drop(edges.index[edges['target'] == id], inplace=True)
+
+    return nodes, edges
+
 if __name__ == "__main__":
     accounts_df = get_accounts_df()
-    get_following_df(accounts_df)
-        
+    nodes, edges = get_following_df(accounts_df)
+    output_files(nodes, edges)
+    nodes, edges = filter_out()
+    output_files(nodes, edges)
