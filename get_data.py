@@ -1,6 +1,6 @@
 import requests
 import json
-from secret_chris import *
+from secret import *
 import pandas as pd
 
 
@@ -72,7 +72,7 @@ def get_stan_data(f):
             print(id, 'private acc')
         else:
             print(id)
-            create_json('all/i_'+id,json_response)
+            create_json('following/i_'+id,json_response)
         # check if acc is following more than 10 accounts
         if 'errors' not in json_response.keys() and json_response['meta']["result_count"] > 10:
             # first store obtained data into all
