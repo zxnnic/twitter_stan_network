@@ -53,32 +53,32 @@ def getStats(fname):
     print('SCC', end=": ")
     print(len([len(c) for c in sorted(nx.strongly_connected_components(G), key=len, reverse=True)]))
     
-    # degree centrality
-    with open('./data/degree_centrality.json', 'w') as f:
-        node_degrees = nx.degree_centrality(G)
-        sorted_keys = sorted(node_degrees, key=node_degrees.get)
-        sorted_dict = {}
-        for key in sorted_keys:
-            sorted_dict[key] = node_degrees[key]
-        json.dump(sorted_dict, f)
+    # # degree centrality
+    # with open('./data/degree_centrality.json', 'w') as f:
+    #     node_degrees = nx.degree_centrality(G)
+    #     sorted_keys = sorted(node_degrees, key=node_degrees.get)
+    #     sorted_dict = {}
+    #     for key in sorted_keys:
+    #         sorted_dict[key] = node_degrees[key]
+    #     json.dump(sorted_dict, f)
 
-    # closeness centrality
-    with open('./data/closeness_centrality.json', 'w') as f:
-        node_close = nx.closeness_centrality(G)
-        sorted_keys = sorted(node_close, key=node_close.get)
-        sorted_dict = {}
-        for key in sorted_keys:
-            sorted_dict[key] = node_close[key]
-        json.dump(sorted_dict, f)
+    # # closeness centrality
+    # with open('./data/closeness_centrality.json', 'w') as f:
+    #     node_close = nx.closeness_centrality(G)
+    #     sorted_keys = sorted(node_close, key=node_close.get)
+    #     sorted_dict = {}
+    #     for key in sorted_keys:
+    #         sorted_dict[key] = node_close[key]
+    #     json.dump(sorted_dict, f)
 
-    # betweenness centrality
-    with open('./data/betweenness_centrality.json', 'w') as f:
-        node_btw = nx.betweenness_centrality(G)
-        sorted_keys = sorted(node_btw, key=node_btw.get)
-        sorted_dict = {}
-        for key in sorted_keys:
-            sorted_dict[key] = node_btw[key]
-        json.dump(sorted_dict, f)
+    # # betweenness centrality
+    # with open('./data/betweenness_centrality.json', 'w') as f:
+    #     node_btw = nx.betweenness_centrality(G)
+    #     sorted_keys = sorted(node_btw, key=node_btw.get)
+    #     sorted_dict = {}
+    #     for key in sorted_keys:
+    #         sorted_dict[key] = node_btw[key]
+    #     json.dump(sorted_dict, f)
     
     # diameter = nx.diameter(G)
     # print(f'Diameter: {diameter}')
@@ -87,22 +87,29 @@ def getStats(fname):
     print('Girvan Newman')
     community_generator = community.girvan_newman(G)
     top_level_communities = next(community_generator)
+    next_level_communities = next(community_generator)
     print(sorted(map(sorted, top_level_communities)))
+    print(len(top_level_communities))
+    print(len(next_level_communities))
+
 
     print('Greedy Modularity')
     community_generator = community.greedy_modularity_communities(G)
-    top_level_communities = next(community_generator)
-    print(sorted(map(sorted, top_level_communities)))
+    print(sorted(community_generator[0]))
+    print(len(community_generator[0]))
 
     print('Louvain')
     community_generator = community.louvain_communities(G)
     top_level_communities = next(community_generator)
+    next_level_communities = next(community_generator)
     print(sorted(map(sorted, top_level_communities)))
+    print(len(top_level_communities))
+    
 
 
 if __name__ == "__main__":
     # calculating degree distribution
-    degree_distribution('./data/edges_140.csv')
+    degree_distribution('./data/edges_10.csv')
 
     # get statistics
-    getStats('./data/edges_140.csv')
+    getStats('./data/edges_10.csv')
