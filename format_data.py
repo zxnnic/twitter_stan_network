@@ -13,7 +13,7 @@ def get_following_df(accounts_df):
     all_files = [f for f in listdir(FOLLOWING_DIR) if isfile(join(FOLLOWING_DIR, f))]
     edge_df = pd.DataFrame({},columns=['source', 'target'])
     nodes_df = pd.DataFrame({},columns=['id', 'name', 'username'])
-    all_files = all_files[:100]
+    all_files = all_files[:200]
     for f in all_files:
         # sanity check
         source_id = f[2:-5]
@@ -52,15 +52,15 @@ def get_accounts_df():
     return df
 
 def output_files(nodes_df, edges_df):
-    nodes_df.to_csv('./data/nodes_100.csv', index=False)
-    edges_df.to_csv('./data/edges_100.csv', index=False)
+    nodes_df.to_csv('./data/nodes_200.csv', index=False)
+    edges_df.to_csv('./data/edges_200.csv', index=False)
 
 def filter_out():
     with open('./data/removed_ids.json', encoding='utf-8') as f_obj:
         remove_ids = json.load(f_obj)['removed_ids']
     
-    nodes = pd.read_csv('./data/nodes_100.csv', encoding='utf-8')
-    edges = pd.read_csv('./data/edges_100.csv', encoding='utf-8')
+    nodes = pd.read_csv('./data/nodes_200.csv', encoding='utf-8')
+    edges = pd.read_csv('./data/edges_200.csv', encoding='utf-8')
     # filter out nodes
     print('\nremoving entries')
     for id in remove_ids:
@@ -99,8 +99,8 @@ def create_subset(nodes, edges, size):
     return nodes, edges
 
 def format_d3_json():
-    nodes_df = pd.read_csv('./data/nodes_100.csv', encoding='utf-8')
-    edges_df = pd.read_csv('./data/edges_100.csv', encoding='utf-8')
+    nodes_df = pd.read_csv('./data/nodes_200.csv', encoding='utf-8')
+    edges_df = pd.read_csv('./data/edges_200.csv', encoding='utf-8')
 
     nodes = []
     edges = []
@@ -117,7 +117,7 @@ def format_d3_json():
             "target":int(row.target)
         })
 
-    f = open('./data/network_data_100.json', 'w')
+    f = open('./data/network_data_200.json', 'w')
     json.dump({"nodes":nodes,"links":edges}, f, sort_keys=True)
 
 
